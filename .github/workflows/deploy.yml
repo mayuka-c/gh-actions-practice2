@@ -77,4 +77,14 @@ jobs:
       - name: "Perform Deploy"
         run: |
           echo "Performing Deploy....."
-          echo "......................"    
+          echo "......................"
+
+  report:
+    if: failure()
+    needs: [lint_test, deploy]
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Output github context"
+        run: |
+          echo "Something went wrong!!"
+          echo "${{ github }}"
