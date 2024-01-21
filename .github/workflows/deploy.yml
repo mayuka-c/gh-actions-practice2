@@ -23,7 +23,14 @@ jobs:
       - name: "Perform lint"
         run: npm run lint
       - name: "Perform tests"
+        id: test-code
         run: npm run test
+      - name: "Upload failure test report"
+        if: failure() && ${{ steps.test-code.outcome }} == 'failure'
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report
+          path: test.json
 
   build:
     needs: [lint_test]
