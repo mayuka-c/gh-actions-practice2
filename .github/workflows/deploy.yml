@@ -14,11 +14,13 @@ jobs:
         with:
           node-version: 'latest'
       - name: "Cache dependencies"
+        id: cache
         uses: actions/cache@v3
         with:
-          path: ~/.npm
+          path: node_modules
           key: node-modules-dep-${{ hashFiles('**/package-lock.json') }}
       - name: "Install dependencies"
+        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: "Perform lint"
         run: npm run lint
@@ -45,11 +47,13 @@ jobs:
         with:
           node-version: 'latest'
       - name: "Cache dependencies"
+        id: cache
         uses: actions/cache@v3
         with:
           path: ~/.npm
           key: node-modules-dep-${{ hashFiles('**/package-lock.json') }}
       - name: "Install dependencies"
+        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: "Perform Build"
         run: npm run build
